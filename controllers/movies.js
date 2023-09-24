@@ -37,7 +37,7 @@ module.exports.createMovie = (req, res, next) => {
     nameRU,
     nameEN,
   } = req.body;
-  const ownerId = req.user._id;
+  const owner = req.user._id;
 
   Movie.create({
     country,
@@ -49,9 +49,9 @@ module.exports.createMovie = (req, res, next) => {
     trailerLink,
     thumbnail,
     movieId,
+    owner,
     nameRU,
     nameEN,
-    owner: ownerId,
   })
     .then((movie) => res.status(HTTP_STATUS_CREATED).send(movie))
     .catch((err) => {
@@ -67,12 +67,12 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
-        next(new NotFoundError(MOVIE_NOT_FOUND_MESSAGE));
+        throw new NotFoundError(MOVIE_NOT_FOUND_MESSAGE);
       }
       if (movie.owner.toString() !== req.user._id) {
-        next(new ForbiddenError(FORBIDDEN_MESSAGE));
+        throw new ForbiddenError(FORBIDDEN_MESSAGE);
       }
-      return Movie.findByIdAndDelete(req.params.movieId)
+      Movie.findByIdAndDelete(req.params.movieId)
         .orFail(() => new NotFoundError(MOVIE_NOT_FOUND_MESSAGE))
         .then(() => {
           res.send({ message: SUCCESS_MOVIE_DELETE_MESSAGE });

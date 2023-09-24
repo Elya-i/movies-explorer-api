@@ -10,6 +10,7 @@ const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/error-handler');
 const limiter = require('./middlewares/express-rate-limit');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { CRASH_SERVER_MESSAGE } = require('./utils/constants');
 
 const app = express();
 app.use(cors);
@@ -25,6 +26,12 @@ app.use(limiter);
 app.use(helmet());
 app.use(express.json());
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error(CRASH_SERVER_MESSAGE);
+  }, 0);
+});
 
 app.use(router);
 

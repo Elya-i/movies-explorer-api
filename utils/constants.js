@@ -14,9 +14,10 @@ const MOVIE_NOT_FOUND_MESSAGE = 'Фильм с указанным _id не на�
 const FORBIDDEN_MESSAGE = 'Отсутствуют права доступа на удаление фильма';
 const INCORRECT_MOVIE_ID_MESSAGE = 'Передан некорректный _id фильма';
 const SUCCESS_MOVIE_DELETE_MESSAGE = 'Фильм успешно удален c сервера';
-const LIMITER_MESSAGE = 'Too many requests';
+const LIMITER_MESSAGE = 'Превышен лимит запросов. Повторите попытку позже';
 const INCORRECT_EMAIL_MESSAGE = 'Неправильный формат email';
 const INCORRECT_URL_MESSAGE = 'Неправильный формат url';
+const CRASH_SERVER_MESSAGE = 'Сервер сейчас упадет';
 
 module.exports = {
   DEFAULT_ERROR_MESSAGE,
@@ -38,4 +39,5 @@ module.exports = {
   LIMITER_MESSAGE,
   INCORRECT_EMAIL_MESSAGE,
   INCORRECT_URL_MESSAGE,
+  CRASH_SERVER_MESSAGE,
 };
