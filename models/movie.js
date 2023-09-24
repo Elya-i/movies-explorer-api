@@ -39,6 +39,14 @@ const movieSchema = new mongoose.Schema({
       message: INCORRECT_URL_MESSAGE,
     },
   },
+  thumbnail: {
+    type: String,
+    required: [true, 'Должна быть указана ссылка на мини-постер фильма'],
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: INCORRECT_URL_MESSAGE,
+    },
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
