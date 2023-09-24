@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const isURL = require('validator/lib/isURL');
+const validator = require('validator');
 const INCORRECT_URL_MESSAGE = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "image" должно быть заполнено'],
     validate: {
-      validator: (v) => isURL(v),
+      validator: (v) => validator.isURL(v),
       message: INCORRECT_URL_MESSAGE,
     },
   },
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "trailerLink" должно быть заполнено'],
     validate: {
-      validator: (v) => isURL(v),
+      validator: (v) => validator.isURL(v),
       message: INCORRECT_URL_MESSAGE,
     },
   },
