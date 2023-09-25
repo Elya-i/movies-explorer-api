@@ -41,7 +41,7 @@ const movieSchema = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
-    required: [true, 'Должна быть указана ссылка на мини-постер фильма'],
+    required: [true, 'Поле "trailerLink" должно быть заполнено'],
     validate: {
       validator: (v) => validator.isURL(v),
       message: INCORRECT_URL_MESSAGE,

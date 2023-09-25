@@ -1,4 +1,4 @@
-const { HTTP_STATUS_BAD_REQUEST } = require('http2').constants;
+const { HTTP_STATUS_BAD_REQUEST } = require('../utils/constants');
 
 class BadRequestError extends Error {
   constructor(message) {
