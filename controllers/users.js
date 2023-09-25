@@ -1,5 +1,3 @@
-const { HTTP_STATUS_CREATED } = require('http2').constants;
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -15,6 +13,7 @@ const BadRequestError = require('../errors/BadRequestError'); // 400
 const ConflictError = require('../errors/ConflictError'); // 409
 
 const {
+  HTTP_STATUS_CREATED,
   USER_NOT_FOUND_MESSAGE,
   CONFLICT_MESSAGE,
   INCORRECT_CREATE_USER_DATA_MESSAGE,
@@ -50,7 +49,8 @@ module.exports.createUser = (req, res, next) => {
       } else if (err.code === 11000) {
         next(new ConflictError(CONFLICT_MESSAGE));
       } else next(err);
-    });
+    })
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -62,6 +62,8 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err instanceof ValidationError) {
         next(new BadRequestError(INCORRECT_UPDATE_USER_DATA_MESSAGE));
+      } else if (err.code === 11000) {
+        next(new ConflictError(CONFLICT_MESSAGE));
       } else next(err);
     });
 };

@@ -1,5 +1,3 @@
-const { HTTP_STATUS_CREATED } = require('http2').constants;
-
 const mongoose = require('mongoose');
 
 const Movie = require('../models/movie');
@@ -10,6 +8,7 @@ const NotFoundError = require('../errors/NotFoundError'); // 404
 const BadRequestError = require('../errors/BadRequestError'); // 400
 const ForbiddenError = require('../errors/ForbiddenError'); // 403
 const {
+  HTTP_STATUS_CREATED,
   INCORRECT_CREATE_MOVIE_DATA_MESSAGE,
   MOVIE_NOT_FOUND_MESSAGE,
   FORBIDDEN_MESSAGE,
@@ -18,7 +17,7 @@ const {
 } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -72,7 +71,7 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() !== req.user._id) {
         throw new ForbiddenError(FORBIDDEN_MESSAGE);
       }
-      Movie.findByIdAndDelete(req.params.movieId)
+      return Movie.findByIdAndDelete(req.params.movieId)
         .orFail(() => new NotFoundError(MOVIE_NOT_FOUND_MESSAGE))
         .then(() => {
           res.send({ message: SUCCESS_MOVIE_DELETE_MESSAGE });
